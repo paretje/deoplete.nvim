@@ -31,8 +31,11 @@ class Base(LoggingMixin):
         self.disabled_syntaxes = []
 
     def get_complete_position(self, context):
-        m = re.search('(?:' + context['keyword_patterns'] + ')$',
-                      context['input'])
+        if self.input_pattern:
+            pattern = self.input_pattern
+        else:
+            pattern = context['keyword_patterns']
+        m = re.search('(?:' + pattern + ')$', context['input'])
         return m.start() if m else -1
 
     @abstractmethod
